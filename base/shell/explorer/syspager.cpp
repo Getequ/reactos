@@ -21,11 +21,7 @@
 
 #include "precomp.h"
 
-struct InternalIconData : NOTIFYICONDATA
-{
-    // Must keep a separate copy since the original is unioned with uTimeout.
-    UINT uVersionCopy;
-};
+
 
 struct IconWatcherData
 {
@@ -211,7 +207,7 @@ public:
     LRESULT OnCopyData(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     LRESULT OnSettingChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     LRESULT OnGetMinimumSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-
+    CNotifyToolbar* GetToolbar();
 public:
 
     HRESULT WINAPI GetWindow(HWND* phwnd)
@@ -1570,7 +1566,24 @@ HRESULT CSysPagerWnd::Initialize(IN HWND hWndParent)
     return S_OK;
 }
 
+CNotifyToolbar* CSysPagerWnd::GetToolbar()
+{
+    return &Toolbar;
+}
+
 HRESULT CSysPagerWnd_CreateInstance(HWND hwndParent, REFIID riid, void **ppv)
 {
     return ShellObjectCreatorInit<CSysPagerWnd>(hwndParent, riid, ppv);
+}
+
+CToolbar<InternalIconData>* CSysPagerWnd_GetTrayToolbar(IUnknown *pPager)
+{
+    CSysPagerWnd *pager = static_cast<CSysPagerWnd*>(pPager);
+
+     if (pager != NULL)
+    {
+        return pager->GetToolbar();
+    }
+
+     return NULL;
 }

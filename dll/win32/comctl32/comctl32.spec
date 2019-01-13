@@ -181,3 +181,5 @@
 
 ; Exported in v6 but not v5
 @ stdcall DrawShadowText(long wstr long ptr long long long long long)
+@ stdcall LoadIconWithScaleDown(long wstr long long long)
+@ stdcall LoadIconMetric(long wstr long long)

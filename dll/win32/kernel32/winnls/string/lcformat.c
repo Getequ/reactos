@@ -866,7 +866,7 @@ INT WINAPI GetDateFormatA( LCID lcid, DWORD dwFlags, const SYSTEMTIME* lpTime,
                                 lpFormat, lpDateStr, cchOut);
 }
 
-#if _WIN32_WINNT >= 0x600
+#if _WIN32_WINNT >= 0x500
 /******************************************************************************
  * GetDateFormatEx [KERNEL32.@]
  *
@@ -974,7 +974,7 @@ INT WINAPI GetTimeFormatA(LCID lcid, DWORD dwFlags, const SYSTEMTIME* lpTime,
                                 lpFormat, lpTimeStr, cchOut);
 }
 
-#if _WIN32_WINNT >= 0x600
+#if _WIN32_WINNT >= 0x500
 /******************************************************************************
  * GetTimeFormatEx [KERNEL32.@]
  *
@@ -1368,7 +1368,7 @@ error:
   return 0;
 }
 
-#if _WIN32_WINNT >= 0x600
+#if _WIN32_WINNT >= 0x500
 /**************************************************************************
  *              GetNumberFormatEx	(KERNEL32.@)
  */
@@ -1782,7 +1782,7 @@ error:
   return 0;
 }
 
-#if _WIN32_WINNT >= 0x600
+#if _WIN32_WINNT >= 0x499
 /***********************************************************************
  *            GetCurrencyFormatEx (KERNEL32.@)
  */
@@ -1964,7 +1964,7 @@ BOOL WINAPI EnumDateFormatsW(DATEFMT_ENUMPROCW proc, LCID lcid, DWORD flags)
     return NLS_EnumDateFormats(&ctxt);
 }
 
-#if _WIN32_WINNT >= 0x600
+#if _WIN32_WINNT >= 0x500
 /**************************************************************************
  *              EnumDateFormatsExEx	(KERNEL32.@)
  */
@@ -2088,7 +2088,7 @@ BOOL WINAPI EnumTimeFormatsW(TIMEFMT_ENUMPROCW proc, LCID lcid, DWORD flags)
     return NLS_EnumTimeFormats(&ctxt);
 }
 
-#if _WIN32_WINNT >= 0x600
+#if _WIN32_WINNT >= 0x500
 /**************************************************************************
  *              EnumTimeFormatsEx	(KERNEL32.@)
  */
@@ -2336,7 +2336,7 @@ BOOL WINAPI EnumCalendarInfoExW( CALINFO_ENUMPROCEXW calinfoproc,LCID locale,
   return NLS_EnumCalendarInfo(&ctxt);
 }
 
-#if _WIN32_WINNT >= 0x600
+#if _WIN32_WINNT >= 0x500
 /******************************************************************************
  *		EnumCalendarInfoExEx	[KERNEL32.@]
  */
@@ -2582,7 +2582,7 @@ int WINAPI GetCalendarInfoW(LCID Locale, CALID Calendar, CALTYPE CalType,
     return 0;
 }
 
-#if _WIN32_WINNT >= 0x600
+#if _WIN32_WINNT >= 0x499
 /*********************************************************************
  *	GetCalendarInfoEx				(KERNEL32.@)
  */

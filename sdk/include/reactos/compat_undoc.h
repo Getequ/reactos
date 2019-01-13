@@ -15,6 +15,7 @@ typedef struct _ReactOS_ShimData
 #define REACTOS_SHIMDATA_MAGIC  0xAC0DEDAB
 
 #ifndef WINVER_VISTA
+#define WINVER_2003     0x0502
 #define WINVER_VISTA    0x0600
 #define WINVER_WIN7     0x0601
 #define WINVER_WIN8     0x0602

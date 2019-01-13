@@ -646,7 +646,7 @@ ThemeInitApiHook(UAPIHK State, PUSERAPIHOOK puah)
     UAH_HOOK_MESSAGE(puah->WndProcArray, WM_MDISETMENU);
     UAH_HOOK_MESSAGE(puah->WndProcArray, WM_THEMECHANGED);
     UAH_HOOK_MESSAGE(puah->WndProcArray, WM_UAHINIT);
-
+    
     puah->DlgProcArray.MsgBitArray = gabDLGPmessages;
     puah->DlgProcArray.Size = UAHOWP_MAX_SIZE;
 

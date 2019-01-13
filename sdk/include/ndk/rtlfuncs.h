@@ -2749,6 +2749,7 @@ RtlSetIoCompletionCallback(
     _In_ ULONG Flags
 );
 
+
 NTSYSAPI
 NTSTATUS
 NTAPI
@@ -4465,6 +4466,33 @@ NTSYSAPI
 BOOLEAN
 NTAPI
 RtlGetNtProductType(OUT PNT_PRODUCT_TYPE ProductType);
+
+
+VOID
+NTAPI
+RtlInitializeConditionVariable(OUT PRTL_CONDITION_VARIABLE ConditionVariable);
+
+VOID
+NTAPI
+RtlWakeConditionVariable(IN OUT PRTL_CONDITION_VARIABLE ConditionVariable);
+
+VOID
+NTAPI
+RtlWakeAllConditionVariable(IN OUT PRTL_CONDITION_VARIABLE ConditionVariable);
+
+NTSYSAPI 
+NTSTATUS  
+NTAPI 
+RtlSleepConditionVariableCS(IN OUT PRTL_CONDITION_VARIABLE ConditionVariable,
+                            IN OUT PRTL_CRITICAL_SECTION CriticalSection,
+                            IN const LARGE_INTEGER * TimeOut OPTIONAL);
+
+NTSTATUS
+NTAPI
+RtlSleepConditionVariableSRW(IN OUT PRTL_CONDITION_VARIABLE ConditionVariable,
+                             IN OUT PRTL_SRWLOCK SRWLock,
+                             IN const LARGE_INTEGER * TimeOut  OPTIONAL,
+                             IN ULONG Flags);
 
 //
 // Secure Memory Functions
