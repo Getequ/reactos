@@ -217,6 +217,10 @@
 217 stdcall EqualDomainSid(ptr ptr ptr)
 218 stdcall EqualPrefixSid(ptr ptr)
 219 stdcall EqualSid(ptr ptr)
+@ stdcall EventWrite(ptr ptr long ptr)
+@ stdcall EventWriteTransfer(ptr ptr ptr ptr long ptr)
+@ stdcall EventRegister(ptr ptr ptr ptr)
+@ stdcall EventUnregister(ptr)
 220 stdcall FileEncryptionStatusA(str ptr)
 221 stdcall FileEncryptionStatusW(wstr ptr)
 222 stdcall FindFirstFreeAce(ptr ptr)
@@ -682,5 +686,5 @@
 682 stub WmiSetSingleItemW
 683 stub Wow64Win32ApiEntry
 684 stdcall WriteEncryptedFileRaw(ptr ptr ptr)
-685 stdcall -version=0x600+ RegLoadMUIStringW(ptr wstr wstr long ptr long wstr) advapi32_vista.RegLoadMUIStringW
-686 stdcall -version=0x600+ RegLoadMUIStringA(ptr str str long ptr long str) advapi32_vista.RegLoadMUIStringA
+685 stdcall RegLoadMUIStringW(ptr wstr wstr long ptr long wstr) advapi32_vista.RegLoadMUIStringW
+686 stdcall RegLoadMUIStringA(ptr str str long ptr long str) advapi32_vista.RegLoadMUIStringA

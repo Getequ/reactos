@@ -400,6 +400,7 @@ START_TEST(versionlie)
     run_test("VistaSP1VersionLie", &g_WinVistaSP1);
     run_test("VistaSP2VersionLie", &g_WinVistaSP2);
     run_test("Win7RTMVersionLie", &g_Win7RTM);
+    run_test("Win7SP1VersionLie", &g_Win7SP1);
     run_test("Win8RTMVersionLie", &g_Win8RTM);
     run_test("Win81RTMVersionLie", &g_Win81RTM);
 }
