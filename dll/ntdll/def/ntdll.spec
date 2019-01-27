@@ -678,6 +678,7 @@
 # stdcall RtlGetUnloadEventTrace
 676 stdcall RtlGetUserInfoHeap(ptr long ptr ptr ptr)
 677 stdcall RtlGetVersion(ptr)
+@ stdcall RtlGetProductInfo(long long long long ptr)
 678 stdcall RtlHashUnicodeString(ptr long long ptr)
 679 stdcall RtlIdentifierAuthoritySid(ptr)
 680 stdcall RtlImageDirectoryEntryToData(long long long ptr)

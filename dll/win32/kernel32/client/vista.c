@@ -8,14 +8,13 @@
 /* INCLUDES *******************************************************************/
 
 #include <k32.h>
-
+#include <winnt.h>
 #define NDEBUG
 #include <debug.h>
-
-#if _WIN32_WINNT >= 0x600
+#if _WIN32_WINNT >= 0x500
 
 /* FIXME: Move these RTL declarations to the NDK */
-NTSTATUS
+/*NTSTATUS
 NTAPI
 RtlSleepConditionVariableCS(IN OUT PRTL_CONDITION_VARIABLE ConditionVariable,
                             IN OUT PRTL_CRITICAL_SECTION CriticalSection,
@@ -26,7 +25,7 @@ NTAPI
 RtlSleepConditionVariableSRW(IN OUT PRTL_CONDITION_VARIABLE ConditionVariable,
                              IN OUT PRTL_SRWLOCK SRWLock,
                              IN PLARGE_INTEGER TimeOut  OPTIONAL,
-                             IN ULONG Flags);
+                             IN ULONG Flags);*/
 
 /* PUBLIC FUNCTIONS ***********************************************************/
 
@@ -49,7 +48,7 @@ SleepConditionVariableCS(IN OUT PCONDITION_VARIABLE ConditionVariable,
         TimeOutPtr = &TimeOut;
     }
 
-#if 0
+#if 1
     Status = RtlSleepConditionVariableCS((PRTL_CONDITION_VARIABLE)ConditionVariable,
                                          (PRTL_CRITICAL_SECTION)CriticalSection,
                                          TimeOutPtr);
@@ -84,7 +83,7 @@ SleepConditionVariableSRW(IN OUT PCONDITION_VARIABLE ConditionVariable,
         TimeOutPtr = &TimeOut;
     }
 
-#if 0
+#if 1
     Status = RtlSleepConditionVariableSRW((PRTL_CONDITION_VARIABLE)ConditionVariable,
                                           (PRTL_SRWLOCK)SRWLock,
                                           TimeOutPtr,
@@ -312,6 +311,9 @@ RegisterApplicationRestart(IN PCWSTR pwzCommandline  OPTIONAL,
     return E_FAIL;
 }
 
+
+
+#define REPARSE_DATA_BUFFER_HEADER_SIZE   FIELD_OFFSET(REPARSE_DATA_BUFFER, GenericReparseBuffer)
 
 /*
  * @implemented
@@ -763,6 +765,19 @@ GetFileMUIPath(
     return FALSE;
 }
 
+
+/******************************************************************************
+ *           ResolveLocaleName (KERNEL32.@)
+ */
+
+INT WINAPI ResolveLocaleName(LPCWSTR name, LPWSTR localename, INT len)
+{
+    //FIXME("stub: %s, %p, %d\n", wine_dbgstr_w(name), localename, len);
+
+    SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
+    return 0;
+}
+
 /*
  * @unimplemented
  */
@@ -782,7 +797,7 @@ GetProcessPreferredUILanguages(
 /*
 * @unimplemented
 */
-BOOL
+/*BOOL
 WINAPI
 GetSystemPreferredUILanguages(
     DWORD dwFlags,
@@ -793,12 +808,12 @@ GetSystemPreferredUILanguages(
     DPRINT1("%x %p %p %p\n", dwFlags, pulNumLanguages, pwszLanguagesBuffer, pcchLanguagesBuffer);
     SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
     return FALSE;
-}
+}*/
 
 /*
  * @unimplemented
  */
-BOOL
+/*BOOL
 WINAPI
 GetThreadPreferredUILanguages(
     DWORD dwFlags,
@@ -809,7 +824,7 @@ GetThreadPreferredUILanguages(
     DPRINT1("%x %p %p %p\n", dwFlags, pulNumLanguages, pwszLanguagesBuffer, pcchLanguagesBuffer);
     SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
     return FALSE;
-}
+}*/
 
 /*
  * @unimplemented
@@ -844,7 +859,7 @@ GetUILanguageInfo(
 /*
  * @unimplemented
  */
-BOOL
+/*BOOL
 WINAPI
 GetUserPreferredUILanguages(
     DWORD dwFlags,
@@ -855,7 +870,7 @@ GetUserPreferredUILanguages(
     DPRINT1("%x %p %p %p\n", dwFlags, pulNumLanguages, pwszLanguagesBuffer, pcchLanguagesBuffer);
     SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
     return FALSE;
-}
+}*/
 
 /*
  * @unimplemented
@@ -876,7 +891,7 @@ SetProcessPreferredUILanguages(
 /*
  * @unimplemented
  */
-BOOL
+/*BOOL
 WINAPI
 SetThreadPreferredUILanguages(
     DWORD dwFlags,
@@ -887,5 +902,5 @@ SetThreadPreferredUILanguages(
     DPRINT1("%x %p %p\n", dwFlags, pwszLanguagesBuffer, pulNumLanguages);
     SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
     return FALSE;
-}
+}*/
 

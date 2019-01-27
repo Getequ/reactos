@@ -83,6 +83,9 @@ Signature = "$Windows NT$"
 62 = Resources\Themes\Modern
 63 = 3rdParty
 
+105 = Resources\Themes\Royale
+
+
 .InfEnd
 
 ; Contents of disk
@@ -127,5 +130,8 @@ Signature = "$Windows NT$"
 "modules/optional/vmx_svga.inf"                       6  optional
 "modules/optional/vmx_svga.sys"                       3  optional
 "modules/optional/wine_gecko-2.40-x86.msi"            1  optional
+"modules/optional/wp005.bmp"                          45 optional
+"modules/optional/theme/Royale.msstyles"             105 optional
+"modules/optional/soft.zip"                            1 optional
 "boot/bootdata/bootcdregtest/AHKAppTests.cmd"         7  optional
 ; DON'T REMOVE THE FOLLOWING NEW LINE ! THIS MEANS YOU !
