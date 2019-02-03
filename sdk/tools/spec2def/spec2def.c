@@ -50,7 +50,7 @@ char *pszSourceFileName = NULL;
 char *pszDllName = NULL;
 char *gpszUnderscore = "";
 int gbDebug;
-unsigned guOsVersion = 0x502;
+unsigned guOsVersion = 0x600;
 #define DbgPrint(...) (!gbDebug || fprintf(stderr, __VA_ARGS__))
 
 enum
@@ -857,6 +857,9 @@ ParseFile(char* pcStart, FILE *fileDest, PFNOUTLINE OutputLine)
                         endversion = strtoul(pc, &pc, 16);
                     }
 
+                    // hack hack hack
+                    endversion = 0xFFF;
+                    
                     /* Check for degenerate range */
                     if (version > endversion)
                     {
