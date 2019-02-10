@@ -48,7 +48,7 @@ static const struct
     {"Windows"     , 0                , LoadAndBootWindows   },
     {"WindowsNT40" , _WIN32_WINNT_NT4 , LoadAndBootWindows   },
 #endif
-    {"Windows2003" , _WIN32_WINNT_WS03, LoadAndBootWindows   },
+    {"Windows2003" , TARGET_VERSION   , LoadAndBootWindows   },
 };
 
 /* FUNCTIONS ******************************************************************/

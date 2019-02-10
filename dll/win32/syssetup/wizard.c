@@ -1662,6 +1662,8 @@ ThemePageDlgProc(HWND hwndDlg,
             ListView_SetTextBkColor(hListView, CLR_NONE);
             /* Reduce the size between the items */
             ListView_SetIconSpacing(hListView, 190, 173);
+
+            //SendDlgItemMessage(hwndDlg, IDC_THEMEPICKER, BM_SETCHECK, BST_CHECKED, 0);
             break;
         }
         case WM_NOTIFY:
@@ -1675,6 +1677,7 @@ ThemePageDlgProc(HWND hwndDlg,
                         int iTheme = pnmv->iItem;
                         DPRINT1("Selected theme: %u\n", Themes[iTheme].DisplayName);
 
+/*
                         if (Themes[iTheme].ThemeFile)
                         {
                             WCHAR wszParams[1024];
@@ -1689,6 +1692,18 @@ ThemePageDlgProc(HWND hwndDlg,
                         {
                             RunControlPanelApplet(hwndDlg, L"desk.cpl desk,@Appearance /Action:ActivateMSTheme");
                         }
+*/
+                        {
+                            WCHAR wszParams[1024];
+                            WCHAR wszTheme[MAX_PATH];
+                            WCHAR* format = L"desk.cpl desk,@Appearance /Action:ActivateMSTheme /file:\"%s\"";
+
+                            SHGetFolderPathAndSubDirW(0, CSIDL_RESOURCES, NULL, SHGFP_TYPE_DEFAULT, L"themes\\Aero Vista CG\\Aero Vista CG.msstyles", wszTheme);
+                            swprintf(wszParams, format, wszTheme);
+                            RunControlPanelApplet(hwndDlg, wszParams);
+                        }
+                        break;
+//>>>>>>> bca112a4aa... 2019.02.10
                     }
                     break;
                 case PSN_SETACTIVE:
@@ -2163,7 +2178,7 @@ FinishDlgProc(HWND hwndDlg,
 
             hWndProgress = GetDlgItem(hwndDlg, IDC_RESTART_PROGRESS);
             Position = SendMessage(hWndProgress, PBM_GETPOS, 0, 0);
-            if (Position == 300)
+            if (Position == 50)
             {
                 KillTimer(hwndDlg, 1);
                 PropSheet_PressButton(GetParent(hwndDlg), PSBTN_FINISH);
@@ -2186,9 +2201,9 @@ FinishDlgProc(HWND hwndDlg,
                     PropSheet_SetWizButtons(GetParent(hwndDlg), PSWIZB_FINISH);
 
                     SendDlgItemMessage(hwndDlg, IDC_RESTART_PROGRESS, PBM_SETRANGE, 0,
-                                       MAKELPARAM(0, 300));
+                                       MAKELPARAM(0, 50));
                     SendDlgItemMessage(hwndDlg, IDC_RESTART_PROGRESS, PBM_SETPOS, 0, 0);
-                    SetTimer(hwndDlg, 1, 50, NULL);
+                    SetTimer(hwndDlg, 1, 25, NULL);
                     break;
 
                 case PSN_WIZFINISH:
@@ -2787,8 +2802,22 @@ InstallWizard(VOID)
     pSetupData->hTitleFont = CreateTitleFont();
     pSetupData->hBoldFont  = CreateBoldFont();
 
+    
     /* Display the wizard */
     hWnd = (HWND)PropertySheet(&psh);
+    
+    
+    if (1==1)
+    {
+        WCHAR wszParams[1024];
+        WCHAR wszTheme[MAX_PATH];
+        WCHAR* format = L"desk.cpl desk,@Appearance /Action:ActivateMSTheme /file:\"%s\"";
+
+        SHGetFolderPathAndSubDirW(0, CSIDL_RESOURCES, NULL, SHGFP_TYPE_DEFAULT, L"themes\\Aero Vista CG\\Aero Vista CG.msstyles", wszTheme);
+        swprintf(wszParams, format, wszTheme);
+        RunControlPanelApplet(hWnd, wszParams);
+    }
+    
     ShowWindow(hWnd, SW_SHOW);
 
     while (GetMessage(&msg, NULL, 0, 0))

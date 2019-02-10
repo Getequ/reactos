@@ -16,7 +16,7 @@
 
 /* PUBLIC FUNCTIONS ***********************************************************/
 
-#if _WIN32_WINNT >= 0x600
+#if _WIN32_WINNT >= 0x500
 
 /*
  * @implemented

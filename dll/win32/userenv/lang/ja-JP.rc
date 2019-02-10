@@ -2,7 +2,7 @@ LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 
 STRINGTABLE
 BEGIN
-    IDS_PROFILEPATH "%SystemDrive%\\Documents and Settings"
+    IDS_PROFILEPATH "%SystemDrive%\\Users"
     IDS_APPDATA "Application Data"
     IDS_DESKTOP "デスクトップ"
     IDS_FAVORITES "Favorites"
