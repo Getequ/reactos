@@ -156,6 +156,17 @@ typedef struct tagCOLUMN_INFO
   INT cxMin;
 } COLUMN_INFO;
 
+typedef struct tagGROUP_INFO
+{
+  UINT id;
+  UINT mask;
+  LPWSTR pszHeader;
+  LPWSTR pszFooter;
+  UINT stateMask;
+  UINT state;
+  UINT uAlign;
+} GROUP_INFO;
+
 typedef struct tagITEMHDR
 {
   LPWSTR pszText;
@@ -176,6 +187,7 @@ typedef struct tagITEM_INFO
   UINT state;
   LPARAM lParam;
   INT iIndent;
+  INT iGroupId;
   ITEM_ID *id;
 } ITEM_INFO;
 
@@ -230,6 +242,10 @@ typedef struct tagLISTVIEW_INFO
 
   /* tooltips */
   HWND hwndToolTip;
+
+  /* groups */
+  BOOL bGroupsEnabled;
+  HDPA hdpaGroups;
 
   /* items */
   INT nItemCount;		/* the number of items in the list */
@@ -303,6 +319,7 @@ typedef struct tagLISTVIEW_INFO
   /* font */
   HFONT hDefaultFont;
   HFONT hFont;
+  HFONT hGroupFont;
   INT ntmHeight;            /* Some cached metrics of the font used */
   INT ntmMaxCharWidth;      /* by the listview to draw items */
   INT nEllipsisWidth;
@@ -2288,11 +2305,23 @@ static void LISTVIEW_GetItemOrigin(const LISTVIEW_INFO *infoPtr, INT nItem, LPPO
     }
     else /* LV_VIEW_DETAILS */
     {
+        INT nItemShift = 0;
+        //WCHAR asd[10];
+
 	lpptPosition->x = REPORT_MARGINX;
 	/* item is always at zero indexed column */
 	if (DPA_GetPtrCount(infoPtr->hdpaColumns) > 0)
 	    lpptPosition->x += LISTVIEW_GetColumnInfo(infoPtr, 0)->rcHeader.left;
-	lpptPosition->y = nItem * infoPtr->nItemHeight;
+
+        if (infoPtr->bGroupsEnabled)
+        {
+            HDPA subitems = DPA_GetPtr(infoPtr->hdpaItems, nItem);
+            ITEM_INFO *item = DPA_GetPtr(subitems, 0);
+            nItemShift = (item->iGroupId + 1);
+            //_itow(nItemShift, asd, 10);
+            //MessageBoxW(NULL, asd, L"shift", MB_OK);
+        }
+	lpptPosition->y = nItem * infoPtr->nItemHeight + nItemShift * 30;
     }
 }
     
@@ -4258,6 +4287,9 @@ static BOOL set_main_item(LISTVIEW_INFO *infoPtr, const LVITEMW *lpLVItem, BOOL 
     if ((lpLVItem->mask & LVIF_INDENT) && (lpItem->iIndent != lpLVItem->iIndent))
 	uChanged |= LVIF_INDENT;
 
+    if ((lpLVItem->mask & LVIF_GROUPID) && (lpItem->iGroupId != lpLVItem->iGroupId))
+        uChanged |= LVIF_GROUPID;
+
     if ((lpLVItem->mask & LVIF_TEXT) && textcmpWT(lpItem->hdr.pszText, lpLVItem->pszText, isW))
 	uChanged |= LVIF_TEXT;
    
@@ -4308,6 +4340,9 @@ static BOOL set_main_item(LISTVIEW_INFO *infoPtr, const LVITEMW *lpLVItem, BOOL 
 
     if (lpLVItem->mask & LVIF_INDENT)
 	lpItem->iIndent = lpLVItem->iIndent;
+
+    if (lpLVItem->mask & LVIF_GROUPID)
+	lpItem->iGroupId = lpLVItem->iGroupId;
 
     if (uChanged & LVIF_STATE)
     {
@@ -4579,6 +4614,57 @@ static inline BOOL LISTVIEW_FillBkgnd(const LISTVIEW_INFO *infoPtr, HDC hdc, con
     return FillRect(hdc, lprcBox, infoPtr->hBkBrush);
 }
 
+
+static void draw_gradient_line(HDC hDc, RECT Rect)
+{
+    GRADIENT_RECT gcap = {0, 1};
+    TRIVERTEX Vertices[2];
+    COLORREF Colors[2];
+
+    Colors[0] = GetSysColor(COLOR_GRADIENTACTIVECAPTION);
+    Colors[1] = 0xFFFFFFFF;
+
+    Vertices[0].x = Rect.left;
+    Vertices[0].y = Rect.top;
+    Vertices[0].Red = (WORD)Colors[0]<<8;
+    Vertices[0].Green = (WORD)Colors[0] & 0xFF00;
+    Vertices[0].Blue = (WORD)(Colors[0]>>8) & 0xFF00;
+    Vertices[0].Alpha = 0;
+
+    Vertices[1].x = Rect.right;
+    Vertices[1].y = Rect.bottom;
+    Vertices[1].Red = (WORD)Colors[1]<<8;
+    Vertices[1].Green = (WORD)Colors[1] & 0xFF00;
+    Vertices[1].Blue = (WORD)(Colors[1]>>8) & 0xFF00;
+    Vertices[1].Alpha = 0;
+
+    GradientFill(hDc, Vertices, 2, &gcap, 1, GRADIENT_FILL_RECT_H);
+}
+
+static void LISTVIEW_DrawGroup(LISTVIEW_INFO *infoPtr, HDC hdc, INT iGroup, INT y)
+{
+    RECT rcHeader;
+    RECT grad;
+    GROUP_INFO *group = DPA_GetPtr(infoPtr->hdpaGroups, iGroup);
+    HFONT font = SelectObject(hdc, infoPtr->hGroupFont);
+
+    rcHeader.left = 14;
+    rcHeader.top = y + 3;
+    rcHeader.right = 200;
+    rcHeader.bottom = infoPtr->nItemHeight + y + 3;
+    
+    DrawTextW(hdc, group->pszHeader, -1, &rcHeader, DT_LEFT);
+    SelectObject(hdc, font);
+
+    grad.left = 0;
+    grad.top = y + 19;
+    grad.right = 300;
+    grad.bottom = grad.top+1;
+    draw_gradient_line(hdc, grad);
+    //MoveToEx(hdc, 0, y + 20, NULL);
+    //LineTo(hdc, 300, y + 20);
+}
+
 /* Draw main item or subitem */
 static void LISTVIEW_DrawItemPart(LISTVIEW_INFO *infoPtr, LVITEMW *item, const NMLVCUSTOMDRAW *nmlvcd, const POINT *pos)
 {
@@ -4752,7 +4838,7 @@ static BOOL LISTVIEW_DrawItem(LISTVIEW_INFO *infoPtr, HDC hdc, INT nItem, ITERAT
     TRACE("(hdc=%p, nItem=%d, subitems=%p, pos=%s)\n", hdc, nItem, subitems, wine_dbgstr_point(&pos));
 
     /* get information needed for drawing the item */
-    lvItem.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM | LVIF_STATE;
+    lvItem.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM | LVIF_STATE | LVIF_GROUPID;
     if (infoPtr->uView == LV_VIEW_DETAILS) lvItem.mask |= LVIF_INDENT;
     lvItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED | LVIS_STATEIMAGEMASK | LVIS_CUT | LVIS_OVERLAYMASK;
     lvItem.iItem = nItem;
@@ -4803,7 +4889,7 @@ static BOOL LISTVIEW_DrawItem(LISTVIEW_INFO *infoPtr, HDC hdc, INT nItem, ITERAT
             /* We need to query for each subitem, item's data (subitem == 0) is already here at this point */
             if (subitems->nItem)
             {
-                lvItem.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM | LVIF_INDENT;
+                lvItem.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM | LVIF_INDENT | LVIF_GROUPID;
                 lvItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED | LVIS_STATEIMAGEMASK | LVIS_CUT | LVIS_OVERLAYMASK;
                 lvItem.iItem = nItem;
                 lvItem.iSubItem = subitems->nItem;
@@ -4949,6 +5035,7 @@ static void LISTVIEW_RefreshReport(LISTVIEW_INFO *infoPtr, ITERATOR *i, HDC hdc,
     RANGES colRanges;
     INT col;
     ITERATOR j;
+    INT iGroup = -1;
 
     TRACE("()\n");
 
@@ -4987,6 +5074,18 @@ static void LISTVIEW_RefreshReport(LISTVIEW_INFO *infoPtr, ITERATOR *i, HDC hdc,
 	LISTVIEW_GetItemOrigin(infoPtr, i->nItem, &Position);
         Position.x = Origin.x;
 	Position.y += Origin.y;
+
+        if (infoPtr->bGroupsEnabled)
+        {
+            HDPA hdpaSubItems = DPA_GetPtr(infoPtr->hdpaItems, i->nItem);
+            ITEM_INFO *item = DPA_GetPtr(hdpaSubItems, 0);
+
+            if (iGroup != item->iGroupId)
+            {
+                iGroup = item->iGroupId;
+                LISTVIEW_DrawGroup(infoPtr, hdc, iGroup, Position.y - 30);
+            }
+        }
 
         subitems = ranges_create(DPA_GetPtrCount(infoPtr->hdpaColumns));
 
@@ -6303,6 +6402,137 @@ static BOOL LISTVIEW_EnsureVisible(LISTVIEW_INFO *infoPtr, INT nItem, BOOL bPart
     return TRUE;
 }
 
+/*
+  return values:
+    0 - value equal to specified;
+    1 - value changed to specified;
+    -1 - changing failed;
+*/
+static INT LISTVIEW_EnableGroupView(LISTVIEW_INFO *infoPtr, BOOL bEnabled)
+{
+    if (infoPtr->dwStyle & LVS_OWNERDATA)
+        return -1;
+
+    if (infoPtr->bGroupsEnabled == bEnabled)
+        return 0;
+
+    infoPtr->bGroupsEnabled = bEnabled;
+    return 1;
+}
+
+static INT LISTVIEW_InsertGroup(LISTVIEW_INFO *infoPtr, INT nGroup, const LVGROUP *lpGroup)
+{
+    GROUP_INFO *lpGroupInfo;
+    INT nNewGroup;
+    //HDITEMW hdi;
+    
+    if (!infoPtr->bGroupsEnabled) 
+        return -1;
+
+    TRACE("(nGroup=%d)\n", nGroup);
+
+    if (!lpGroup) return -1;
+
+    if (nGroup == -1)
+        nGroup = DPA_GetPtrCount(infoPtr->hdpaGroups);
+    else
+        nGroup = min(nGroup, DPA_GetPtrCount(infoPtr->hdpaGroups));
+    
+    if (lpGroup->mask & LVGF_GROUPID)
+        nGroup = lpGroup->iGroupId;
+
+    //ZeroMemory(&hdi, sizeof(HDITEMW));
+    //column_fill_hditem(infoPtr, &hdi, nGroup, lpGroup, isW);
+
+    /*
+     * A mask not including LVCF_WIDTH turns into a mask of width, width 10
+     * (can be seen in SPY) otherwise column never gets added.
+     */
+    /*if (!(lpGroup->mask & LVCF_WIDTH)) {
+        hdi.mask |= HDI_WIDTH;
+        hdi.cxy = 10;
+    }*/
+
+    /*
+     * when the iSubItem is available Windows copies it to the header lParam. It seems
+     * to happen only in LVM_INSERTGROUP - not in LVM_SETGROUP
+     */
+    /*if (lpGroup->mask & LVCF_SUBITEM)
+    {
+        hdi.mask |= HDI_LPARAM;
+        hdi.lParam = lpGroup->iSubItem;
+    }*/
+
+    /* create header if not present */
+    /*LISTVIEW_CreateHeader(infoPtr);
+    if (!(LVS_NOGROUPHEADER & infoPtr->dwStyle) &&
+         (infoPtr->uView == LV_VIEW_DETAILS) && (WS_VISIBLE & infoPtr->dwStyle))
+    {
+        ShowWindow(infoPtr->hwndHeader, SW_SHOWNORMAL);
+    }*/
+
+    /* insert item in header control */
+    nNewGroup = nGroup;
+   
+    /* create our own column info */ 
+    if (!(lpGroupInfo = Alloc(sizeof(GROUP_INFO)))) goto fail;
+    if (DPA_InsertPtr(infoPtr->hdpaGroups, nNewGroup, lpGroupInfo) == -1) goto fail;
+
+    if (lpGroup->mask & LVGF_HEADER) textsetptrT(&lpGroupInfo->pszHeader, lpGroup->pszHeader, TRUE);
+    if (lpGroup->mask & LVGF_FOOTER) lpGroupInfo->pszFooter = lpGroup->pszFooter;
+    if (lpGroup->mask & LVGF_GROUPID) lpGroupInfo->id = lpGroup->iGroupId;
+    if (lpGroup->mask & LVGF_ALIGN) lpGroupInfo->uAlign = lpGroup->uAlign;
+    if (lpGroup->mask & LVGF_STATE) lpGroupInfo->state = lpGroup->state;
+
+    //if (!SendMessageW(infoPtr->hwndHeader, HDM_GETITEMRECT, nNewGroup, (LPARAM)&lpGroupInfo->rcHeader))
+    //    goto fail;
+
+    /* now we have to actually adjust the data */
+    /*if (!(infoPtr->dwStyle & LVS_OWNERDATA) && infoPtr->nItemCount > 0)
+    {
+	SUBITEM_INFO *lpSubItem;
+	HDPA hdpaSubItems;
+	INT nItem, i;
+	LVITEMW item;
+	BOOL changed;
+
+	item.iSubItem = nNewGroup;
+	item.mask = LVIF_TEXT | LVIF_IMAGE;
+	item.iImage = I_IMAGECALLBACK;
+	item.pszText = LPSTR_TEXTCALLBACKW;
+
+	for (nItem = 0; nItem < infoPtr->nItemCount; nItem++)
+	{
+            hdpaSubItems = DPA_GetPtr(infoPtr->hdpaItems, nItem);
+	    for (i = 1; i < DPA_GetPtrCount(hdpaSubItems); i++)
+	    {
+                lpSubItem = DPA_GetPtr(hdpaSubItems, i);
+		if (lpSubItem->iSubItem >= nNewGroup)
+		    lpSubItem->iSubItem++;
+	    }
+
+	    / * add new subitem for each item * /
+	    item.iItem = nItem;
+	    set_sub_item(infoPtr, &item, isW, &changed);
+	}
+    }*/
+
+    /* make space for the new column */
+    //LISTVIEW_ScrollGroups(infoPtr, nNewGroup + 1, lpGroupInfo->rcHeader.right - lpGroupInfo->rcHeader.left);
+    LISTVIEW_UpdateItemSize(infoPtr);
+    
+    return nNewGroup;
+
+fail:
+    //if (nNewGroup != -1) SendMessageW(infoPtr->hwndHeader, HDM_DELETEITEM, nNewGroup, 0);
+    if (lpGroupInfo)
+    {
+        DPA_DeletePtr(infoPtr->hdpaGroups, nNewGroup);
+        Free(lpGroupInfo);
+    }
+    return -1;
+}
+
 /***
  * DESCRIPTION:
  * Searches for an item with specific characteristics.
@@ -6889,6 +7119,12 @@ static BOOL LISTVIEW_GetItemT(const LISTVIEW_INFO *infoPtr, LPLVITEMW lpLVItem, 
 	/* if LVN_GETDISPINFO's disabled with LVIF_NORECOMPUTE return callback placeholder */
 	if (isW || !is_text(pItemHdr->pszText)) lpLVItem->pszText = pItemHdr->pszText;
 	else textcpynT(lpLVItem->pszText, isW, pItemHdr->pszText, TRUE, lpLVItem->cchTextMax);
+    }
+
+    /* The iGroupId field */
+    if (lpLVItem->mask & LVIF_GROUPID)
+    {
+        lpLVItem->iGroupId = lpItem->iGroupId;
     }
 
     /* Next is the lParam field */
@@ -9527,11 +9763,14 @@ static LRESULT LISTVIEW_NCCreate(HWND hwnd, WPARAM wParam, const CREATESTRUCTW *
   infoPtr->itemEdit.fEnabled = FALSE;
   infoPtr->iVersion = COMCTL32_VERSION;
   infoPtr->colRectsDirty = FALSE;
+  infoPtr->bGroupsEnabled = FALSE;
 
   /* get default font (icon title) */
   SystemParametersInfoW(SPI_GETICONTITLELOGFONT, 0, &logFont, 0);
   infoPtr->hDefaultFont = CreateFontIndirectW(&logFont);
   infoPtr->hFont = infoPtr->hDefaultFont;
+  logFont.lfWeight = FW_BOLD;
+  infoPtr->hGroupFont = CreateFontIndirectW(&logFont);
   LISTVIEW_SaveTextMetrics(infoPtr);
 
   /* allocate memory for the data structure */
@@ -9541,6 +9780,7 @@ static LRESULT LISTVIEW_NCCreate(HWND hwnd, WPARAM wParam, const CREATESTRUCTW *
   if (!(infoPtr->hdpaPosX  = DPA_Create(10))) goto fail;
   if (!(infoPtr->hdpaPosY  = DPA_Create(10))) goto fail;
   if (!(infoPtr->hdpaColumns = DPA_Create(10))) goto fail;
+  if (!(infoPtr->hdpaGroups = DPA_Create(10))) goto fail;
 
   return DefWindowProcW(hwnd, WM_NCCREATE, wParam, (LPARAM)lpcs);
 
@@ -9552,6 +9792,7 @@ fail:
     DPA_Destroy(infoPtr->hdpaPosX);
     DPA_Destroy(infoPtr->hdpaPosY);
     DPA_Destroy(infoPtr->hdpaColumns);
+    DPA_Destroy(infoPtr->hdpaGroups);
     Free(infoPtr);
     return FALSE;
 }
@@ -10971,14 +11212,20 @@ static LRESULT LISTVIEW_SetFocus(LISTVIEW_INFO *infoPtr, HWND hwndLoseFocus)
  */
 static LRESULT LISTVIEW_SetFont(LISTVIEW_INFO *infoPtr, HFONT hFont, WORD fRedraw)
 {
+    LOGFONT logFont;
     HFONT oldFont = infoPtr->hFont;
     INT oldHeight = infoPtr->nItemHeight;
+
 
     TRACE("(hfont=%p,redraw=%hu)\n", hFont, fRedraw);
 
     infoPtr->hFont = hFont ? hFont : infoPtr->hDefaultFont;
     if (infoPtr->hFont == oldFont) return 0;
     
+    GetObjectW(infoPtr->hFont, sizeof(logFont), &logFont);
+    logFont.lfWeight = FW_BOLD;
+    infoPtr->hGroupFont = CreateFontIndirectW(&logFont);
+
     LISTVIEW_SaveTextMetrics(infoPtr);
 
     infoPtr->nItemHeight = LISTVIEW_CalculateItemHeight(infoPtr);
@@ -11373,7 +11620,8 @@ LISTVIEW_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
   case LVM_EDITLABELW:
     return (LRESULT)LISTVIEW_EditLabelT(infoPtr, (INT)wParam,
                                         uMsg == LVM_EDITLABELW);
-  /* case LVM_ENABLEGROUPVIEW: */
+  case LVM_ENABLEGROUPVIEW:
+    return LISTVIEW_EnableGroupView(infoPtr, (BOOL)wParam);
 
   case LVM_ENSUREVISIBLE:
     return LISTVIEW_EnsureVisible(infoPtr, (INT)wParam, (BOOL)lParam);
@@ -11539,7 +11787,8 @@ LISTVIEW_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     return LISTVIEW_InsertColumnT(infoPtr, (INT)wParam, (LPLVCOLUMNW)lParam,
                                   uMsg == LVM_INSERTCOLUMNW);
 
-  /* case LVM_INSERTGROUP: */
+  case LVM_INSERTGROUP: 
+    return LISTVIEW_InsertGroup(infoPtr, (INT)wParam, (PLVGROUP)lParam);
 
   /* case LVM_INSERTGROUPSORTED: */
 
@@ -11549,7 +11798,8 @@ LISTVIEW_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
   /* case LVM_INSERTMARKHITTEST: */
 
-  /* case LVM_ISGROUPVIEWENABLED: */
+  case LVM_ISGROUPVIEWENABLED:
+    return infoPtr->bGroupsEnabled;
 
   case LVM_ISITEMVISIBLE:
     return LISTVIEW_IsItemVisible(infoPtr, (INT)wParam);

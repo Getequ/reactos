@@ -8,7 +8,6 @@
 @ stub GetCurrentApplicationUserModelId
 @ stub GetCurrentPackageFamilyName
 @ stub GetCurrentPackageFullName
-@ stub GetCurrentPackageId
 @ stub GetCurrentPackageInfo
 @ stub GetCurrentPackagePath
 @ stub GetPackageApplicationIds
