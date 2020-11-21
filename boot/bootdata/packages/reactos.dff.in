@@ -85,6 +85,9 @@ Signature = "$Windows NT$"
 64 = Resources\Themes\Lunar
 65 = Resources\Themes\Mizu
 
+105 = Resources\Themes\Royale
+106 = Resources\Themes\Aero Vista CG
+
 .InfEnd
 
 ; Contents of disk
@@ -129,5 +132,10 @@ Signature = "$Windows NT$"
 "modules/optional/vmx_svga.inf"                       6  optional
 "modules/optional/vmx_svga.sys"                       3  optional
 "modules/optional/wine_gecko-2.40-x86.msi"            1  optional
+"modules/optional/wp007.bmp"                          45 optional
+"modules/optional/theme/Royale.msstyles"             105 optional
+"modules/optional/theme/Aero Vista CG.msstyles"      106 optional
+"modules/optional/mscoree.dll"                         2 optional
+"modules/optional/soft.zip"                            1 optional
 "boot/bootdata/bootcdregtest/AHKAppTests.cmd"         7  optional
 ; DON'T REMOVE THE FOLLOWING NEW LINE ! THIS MEANS YOU !

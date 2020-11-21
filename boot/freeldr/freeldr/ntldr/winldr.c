@@ -421,7 +421,7 @@ WinLdrDetectVersion(VOID)
     }
 
     // We may here want to read the value of ProductVersion
-    return _WIN32_WINNT_WS03;
+    return TARGET_VERSION;
 }
 
 static
