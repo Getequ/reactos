@@ -354,7 +354,7 @@ LoadReactOSSetup(IN OperatingSystemItem* OperatingSystem,
     UiDrawStatusText("The Setup program is starting...");
 
     /* Load ReactOS Setup */
-    LoadAndBootWindowsCommon(_WIN32_WINNT_WS03,
+    LoadAndBootWindowsCommon(TARGET_VERSION,
                              LoaderBlock,
                              BootOptions,
                              BootPath,

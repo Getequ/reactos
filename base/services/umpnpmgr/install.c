@@ -366,6 +366,7 @@ DeviceInstallThread(LPVOID lpParameter)
         }
         else
         {
+            showWizard = FALSE;
             ResetEvent(hNoPendingInstalls);
             Params = CONTAINING_RECORD(ListEntry, DeviceInstallParams, ListEntry);
             InstallDevice(Params->DeviceIds, showWizard);
