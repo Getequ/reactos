@@ -339,7 +339,7 @@ LRESULT CLayerUIPropPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, 
     HWND cboMode = GetDlgItem(IDC_COMPATIBILITYMODE);
     for (size_t n = 0; g_CompatModes[n].Display; ++n)
         ComboBox_AddString(cboMode, g_CompatModes[n].Display);
-    ComboBox_SetCurSel(cboMode, 5);
+    ComboBox_SetCurSel(cboMode, 12);
 
     CStringW explanation;
     if (!m_AllowPermLayer)
