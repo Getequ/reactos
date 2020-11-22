@@ -11,7 +11,7 @@ LANGUAGE LANG_SPANISH, SUBLANG_NEUTRAL
 
 STRINGTABLE
 BEGIN
-    IDS_PROFILEPATH "%SystemDrive%\\Documents and Settings"
+    IDS_PROFILEPATH "%SystemDrive%\\Users"
     IDS_APPDATA "Datos de programa"
     IDS_DESKTOP "Escritorio"
     IDS_FAVORITES "Favoritos"

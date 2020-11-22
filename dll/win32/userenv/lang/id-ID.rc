@@ -2,7 +2,7 @@ LANGUAGE LANG_INDONESIAN, SUBLANG_DEFAULT
 
 STRINGTABLE
 BEGIN
-    IDS_PROFILEPATH "%SystemDrive%\\Dokumen dan Setelan"
+    IDS_PROFILEPATH "%SystemDrive%\\Users"
     IDS_APPDATA "Data Aplikasi"
     IDS_DESKTOP "Desktop"
     IDS_FAVORITES "Favorit"
