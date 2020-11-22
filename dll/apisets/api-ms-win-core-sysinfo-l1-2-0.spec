@@ -17,7 +17,6 @@
 @ stdcall GetSystemTime() kernel32.GetSystemTime
 @ stdcall GetSystemTimeAdjustment() kernel32.GetSystemTimeAdjustment
 @ stdcall GetSystemTimeAsFileTime() kernel32.GetSystemTimeAsFileTime
-@ stub GetSystemTimePreciseAsFileTime
 @ stdcall GetSystemWindowsDirectoryA() kernel32.GetSystemWindowsDirectoryA
 @ stdcall GetSystemWindowsDirectoryW() kernel32.GetSystemWindowsDirectoryW
 @ stdcall GetTickCount() kernel32.GetTickCount
