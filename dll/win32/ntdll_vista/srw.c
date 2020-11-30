@@ -32,6 +32,12 @@
 #define InterlockedOrPointer(ptr,val) InterlockedOr((PLONG)ptr,(LONG)val)
 #endif
 
+#define SRWLOCK_MASK_IN_EXCLUSIVE     0x80000000
+#define SRWLOCK_MASK_EXCLUSIVE_QUEUE  0x7fff0000
+#define SRWLOCK_MASK_SHARED_QUEUE     0x0000ffff
+#define SRWLOCK_RES_EXCLUSIVE         0x00010000
+#define SRWLOCK_RES_SHARED            0x00000001
+
 #define RTL_SRWLOCK_OWNED_BIT   0
 #define RTL_SRWLOCK_CONTENDED_BIT   1
 #define RTL_SRWLOCK_SHARED_BIT  2
@@ -762,4 +768,33 @@ RtlReleaseSRWLockExclusive(IN OUT PRTL_SRWLOCK SRWLock)
 
         YieldProcessor();
     }
+}
+
+/***********************************************************************
+ *              RtlTryAcquireSRWLockExclusive (NTDLL.@)
+ *
+ * NOTES
+ *  Similar to AcquireSRWLockExclusive recusive calls are not allowed
+ *  and will fail with return value FALSE.
+ */
+BOOLEAN WINAPI RtlTryAcquireSRWLockExclusive( RTL_SRWLOCK *lock )
+{
+    return InterlockedCompareExchange( (volatile long int *)&lock->Ptr, SRWLOCK_MASK_IN_EXCLUSIVE |
+                                SRWLOCK_RES_EXCLUSIVE, 0 ) == 0;
+}
+
+/***********************************************************************
+ *              RtlTryAcquireSRWLockShared (NTDLL.@)
+ */
+BOOLEAN WINAPI RtlTryAcquireSRWLockShared( RTL_SRWLOCK *lock )
+{
+    unsigned int val, tmp;
+    for (val = *(unsigned int *)&lock->Ptr;; val = tmp)
+    {
+        if (val & SRWLOCK_MASK_EXCLUSIVE_QUEUE)
+            return FALSE;
+        if ((tmp = InterlockedCompareExchange( (volatile long int *)&lock->Ptr, val + SRWLOCK_RES_SHARED, val )) == val)
+            break;
+    }
+    return TRUE;
 }
