@@ -255,7 +255,7 @@ ShellIsFriendlyUIActive(VOID)
 DWORD
 GetDefaultShutdownSelState(VOID)
 {
-    return WLX_SAS_ACTION_SHUTDOWN_POWER_OFF;
+    return WLX_SAS_ACTION_SHUTDOWN_REBOOT;
 }
 
 DWORD
@@ -266,7 +266,7 @@ LoadShutdownSelState(VOID)
     DWORD dwValue, dwTemp, dwSize;
 
     /* Default to shutdown */
-    dwValue = WLX_SAS_ACTION_SHUTDOWN_POWER_OFF;
+    dwValue = WLX_SAS_ACTION_SHUTDOWN_REBOOT;
 
     /* Open the current user HKCU key */
     lRet = RegOpenCurrentUser(MAXIMUM_ALLOWED, &hKeyCurrentUser);
