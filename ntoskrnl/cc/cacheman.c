@@ -6,6 +6,7 @@
  *
  * PROGRAMMERS:     David Welch (welch@cwcom.net)
  *                  Pierre Schweitzer (pierre@reactos.org)
+ *                  Oleg Dubinskiy (oleg.dubinskij2013@yandex.ua)
  */
 
 /* INCLUDES *****************************************************************/
@@ -136,8 +137,16 @@ CcGetFlushedValidData (
 	return i;
 }
 
-/*
- * @unimplemented
+/**
+ * @brief Remaps a buffer control block (BCB).
+ * 
+ * Maps data in a cache file for reading, similarly to CcMapData.
+ * This makes the data mapped, but not pinned, so it can't be modified.
+ * 
+ * @param [in] Bcb
+ * Pointer to the BCB.
+ * 
+ * @return Read-only BCB pointer.
  */
 PVOID
 NTAPI
@@ -145,9 +154,12 @@ CcRemapBcb (
     IN PVOID Bcb
     )
 {
-	UNIMPLEMENTED;
+    PINTERNAL_BCB iBcb = Bcb;
 
-    return 0;
+    CCTRACE(CC_API_DEBUG, "Bcb=%p\n", Bcb);
+
+    iBcb->RefCount++;
+    return Bcb;
 }
 
 /*
