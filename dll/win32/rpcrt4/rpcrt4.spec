@@ -355,6 +355,7 @@
 354 stdcall RpcBindingSetOption(ptr long long)
 355 stdcall RpcBindingToStringBindingA(ptr ptr)
 356 stdcall RpcBindingToStringBindingW(ptr ptr)
+@   stdcall RpcBindingUnbind(ptr)
 357 stdcall RpcBindingVectorFree(ptr)
 358 stdcall RpcCancelAsyncCall(ptr long) RpcAsyncCancelCall
 359 stdcall RpcCancelThread(ptr)

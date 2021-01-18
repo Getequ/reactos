@@ -70,6 +70,8 @@ list(APPEND SOURCE
     CCopyToMenu.cpp
     CMoveToMenu.cpp
     CShellDispatch.cpp
+    CShellLibrary.cpp
+    CShellLibrary.h
     CFolder.cpp
     CFolderItems.cpp
     CFolderItemVerbs.cpp)

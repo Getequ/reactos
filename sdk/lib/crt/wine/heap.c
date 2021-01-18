@@ -607,3 +607,29 @@ int CDECL strncpy_s(char *dest, size_t numberOfElements,
     dest[0] = '\0';
     return EINVAL;
 }
+
+/*********************************************************************
+ *		memcpy_s (MSVCRT.@)
+ */
+int CDECL memcpy_s(void *dest, size_t numberOfElements, const void *src, size_t count)
+{
+    TRACE("(%p %Iu %p %Iu)\n", dest, numberOfElements, src, count);
+
+    if(!count)
+        return 0;
+
+    if (!MSVCRT_CHECK_PMT(dest != NULL)) return EINVAL;
+    if (!MSVCRT_CHECK_PMT(src != NULL))
+    {
+        memset(dest, 0, numberOfElements);
+        return EINVAL;
+    }
+    if (!MSVCRT_CHECK_PMT_ERR( count <= numberOfElements, ERANGE ))
+    {
+        memset(dest, 0, numberOfElements);
+        return ERANGE;
+    }
+
+    memmove(dest, src, count);
+    return 0;
+}

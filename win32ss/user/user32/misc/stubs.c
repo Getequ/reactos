@@ -108,6 +108,16 @@ UserRealizePalette ( HDC hDC )
   return NtUserxRealizePalette(hDC);
 }
 
+/*
+ * @unimplemented
+ */
+BOOL
+WINAPI
+LogicalToPhysicalPoint( HWND hWnd, LPPOINT lpPoint )
+{
+    UNIMPLEMENTED;
+    return TRUE;
+}
 
 /*************************************************************************
  *		SetSysColorsTemp (USER32.@) (Wine 10/22/2008)
@@ -643,4 +653,96 @@ ShutdownBlockReasonDestroy(HWND hWnd)
 {
     UNIMPLEMENTED;
     return 1;
+}
+
+BOOL
+WINAPI
+CalculatePopupWindowPosition(const POINT *anchorPoint,
+                             const SIZE *windowSize,
+                             UINT flags,
+                             RECT *excludeRect,
+                             RECT *popupWindowPosition)
+{
+    UNIMPLEMENTED;
+    return TRUE;
+}
+
+BOOL
+WINAPI
+DwmGetDxSharedSurface(HWND hwnd,
+                      HANDLE* phSurface,
+                      LUID* pAdapterLuid,
+                      ULONG* pFmtWindow,
+                      ULONG* pPresentFlags,
+                      ULONGLONG* pWin32kUpdateId)
+{
+    UNIMPLEMENTED;
+    return TRUE;
+}
+
+HWND
+WINAPI
+GhostWindowFromHungWindow(HWND hwndGhost)
+{
+    UNIMPLEMENTED;
+    return NULL;
+}
+
+HWND
+WINAPI
+HungWindowFromGhostWindow(HWND hwndGhost)
+{
+    UNIMPLEMENTED;
+    return NULL;
+}
+
+BOOL
+WINAPI
+IsProcessDPIAware(VOID)
+{
+    UNIMPLEMENTED;
+    return TRUE;
+}
+
+BOOL
+WINAPI
+IsTouchWindow(HWND hwnd,
+              PULONG pulFlags)
+{
+    UNIMPLEMENTED;
+    return TRUE;
+}
+
+BOOL
+WINAPI
+IsThreadDesktopComposited(VOID)
+{
+    UNIMPLEMENTED;
+    return TRUE;
+} 
+
+BOOL
+WINAPI
+IsWindowRedirectedForPrint(IN HWND hWnd)
+{
+    UNIMPLEMENTED;
+    return TRUE;
+}
+
+BOOL
+WINAPI
+GetWindowCompositionAttribute(HWND hwnd,
+                              PVOID pAttrData) // WINCOMPATTRDATA
+{
+    UNIMPLEMENTED;
+    return TRUE;
+}
+
+BOOL
+WINAPI
+SetWindowCompositionAttribute(HWND hwnd,
+                              PVOID pAttrData) // WINCOMPATTRDATA
+{
+    UNIMPLEMENTED;
+    return TRUE;
 }

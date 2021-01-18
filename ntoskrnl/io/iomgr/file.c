@@ -147,7 +147,7 @@ IopCheckDeviceAndDriver(IN POPEN_PACKET OpenPacket,
         DPRINT1("You are seeing this because the following ROS driver: %wZ\n"
                 " sucks. Please fix it's AddDevice Routine\n",
                 &DeviceObject->DriverObject->DriverName);
-        return STATUS_NO_SUCH_DEVICE;
+        //return STATUS_NO_SUCH_DEVICE;
     }
     else if ((DeviceObject->Flags & DO_EXCLUSIVE) &&
              (DeviceObject->ReferenceCount) &&
@@ -163,6 +163,8 @@ IopCheckDeviceAndDriver(IN POPEN_PACKET OpenPacket,
         InterlockedIncrement(&DeviceObject->ReferenceCount);
         return STATUS_SUCCESS;
     }
+
+    return STATUS_SUCCESS;
 }
 
 VOID

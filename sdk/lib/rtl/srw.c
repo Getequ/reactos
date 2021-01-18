@@ -798,3 +798,12 @@ BOOLEAN WINAPI RtlTryAcquireSRWLockShared( RTL_SRWLOCK *lock )
     }
     return TRUE;
 }
+
+/***********************************************************************
+ *              RtlQueryPerformanceCounter (NTDLL.@)
+ */
+BOOLEAN WINAPI RtlQueryPerformanceCounter(OUT PLARGE_INTEGER PerformanceCounter)
+{
+    NtQueryPerformanceCounter(PerformanceCounter, NULL);
+    return TRUE;
+}
