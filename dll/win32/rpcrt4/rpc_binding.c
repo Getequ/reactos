@@ -1985,3 +1985,11 @@ RPC_STATUS WINAPI I_RpcBindingInqLocalClientPID(RPC_BINDING_HANDLE ClientBinding
     FIXME("%p %p: stub\n", ClientBinding, ClientPID);
     return RPC_S_INVALID_BINDING;
 }
+
+#ifdef __REACTOS__
+RPC_STATUS WINAPI RpcBindingUnbind(RPC_BINDING_HANDLE ClientBinding)
+{
+    FIXME("%p: stub\n", ClientBinding);
+    return RPC_S_INVALID_BINDING;
+}
+#endif

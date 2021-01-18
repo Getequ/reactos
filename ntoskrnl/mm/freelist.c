@@ -442,7 +442,11 @@ MmGetRmapListHeadPage(PFN_NUMBER Pfn)
     ListHead = Pfn1->RmapListHead;
 
     /* Should not have an RMAP for a non-active page */
-    ASSERT(MiIsPfnInUse(Pfn1) == TRUE);
+    if (MiIsPfnInUse(Pfn1) == FALSE)
+    {
+        MiReleasePfnLock(oldIrql);
+        return NULL;
+    }
 
     /* Release PFN database and return rmap list head */
     MiReleasePfnLock(oldIrql);

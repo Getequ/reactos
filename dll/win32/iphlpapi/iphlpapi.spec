@@ -11,9 +11,15 @@
 @ stdcall AllocateAndGetUdpExTableFromStack( ptr long long long long )
 @ stdcall AllocateAndGetUdpTableFromStack( ptr long long long )
 @ stdcall CancelIPChangeNotify(ptr)
+@ stdcall -version=0x600+ CancelMibChangeNotify2(ptr)
 @ stub CancelSecurityHealthChangeNotify
+@ stdcall -version=0x600+ ConvertInterfaceGuidToLuid( ptr ptr )
 @ stdcall -version=0x600+ ConvertInterfaceIndexToLuid( long ptr )
+@ stdcall -version=0x600+ ConvertInterfaceLuidToGuid( ptr ptr )
+@ stdcall -version=0x600+ ConvertInterfaceLuidToIndex( ptr ptr )
 @ stdcall -version=0x600+ ConvertInterfaceLuidToNameW( ptr ptr long )
+@ stdcall -version=0x600+ ConvertInterfaceNameToLuidA( str ptr )
+@ stdcall -version=0x600+ ConvertInterfaceNameToLuidW( wstr ptr )
 @ stdcall CreateIpForwardEntry( ptr )
 @ stdcall CreateIpNetEntry( ptr )
 @ stdcall CreateProxyArpEntry( long long long )
@@ -25,6 +31,7 @@
 @ stdcall EnableRouter( ptr ptr )
 @ stdcall FlushIpNetTable( long )
 @ stub FlushIpNetTableFromStack
+@ stdcall -version=0x600+ FreeMibTable(ptr)
 @ stdcall GetAdapterIndex( wstr ptr )
 @ stdcall GetAdapterOrderMap()
 @ stdcall GetAdaptersAddresses( long long ptr ptr ptr )
@@ -44,6 +51,7 @@
 @ stdcall GetIfEntry( ptr )
 @ stub GetIfEntryFromStack
 @ stdcall GetIfTable( ptr ptr long )
+@ stdcall -stub -version=0x600+ GetIfTable2( ptr )
 @ stub GetIfTableFromStack
 @ stub GetIgmpList
 @ stdcall GetInterfaceInfo( ptr ptr )
@@ -114,8 +122,9 @@
 @ stdcall NhGetInterfaceNameFromGuid(ptr ptr ptr long long)
 @ stdcall NhpAllocateAndGetInterfaceInfoFromStack(ptr ptr long ptr long)
 @ stub NhpGetInterfaceIndexFromStack
-@ stdcall NotifyAddrChange( ptr ptr )
-@ stdcall NotifyRouteChange( ptr ptr )
+@ stdcall NotifyAddrChange(ptr ptr)
+@ stdcall -stub -version=0x600+ NotifyIpInterfaceChange(ptr ptr ptr long ptr)
+@ stdcall NotifyRouteChange(ptr ptr)
 @ stub NotifyRouteChangeEx
 @ stub NotifySecurityHealthChange
 @ stdcall _PfAddFiltersToInterface@24()

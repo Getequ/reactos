@@ -1092,3 +1092,37 @@ GdiAddGlsRecord(HDC hdc,
     return 0;
 }
 
+VOID
+WINAPI
+CreateBitmapFromDxSurface(VOID)
+{
+    UNIMPLEMENTED;
+}
+
+VOID
+WINAPI
+CreateBitmapFromDxSurface2(VOID)
+{
+    UNIMPLEMENTED;
+}
+
+VOID
+WINAPI
+BeginGdiRendering(VOID)
+{
+    UNIMPLEMENTED;
+}
+
+VOID
+WINAPI
+EndGdiRendering(VOID)
+{
+    UNIMPLEMENTED;
+}
+
+VOID
+WINAPI
+UnknownOrdinal1(VOID)
+{
+    UNIMPLEMENTED;
+}

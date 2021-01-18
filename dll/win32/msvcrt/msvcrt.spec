@@ -709,8 +709,8 @@
 @ cdecl -arch=x86_64 _local_unwind(ptr ptr)
 @ cdecl -arch=i386 _local_unwind2(ptr long)
 @ cdecl -arch=i386 -version=0x600+ _local_unwind4(ptr ptr long)
-@ stub -version=0x600+ _localtime32
-@ stub -version=0x600+ _localtime32_s
+@ cdecl -version=0x600+ _localtime32(ptr)
+@ cdecl -version=0x600+ _localtime32_s(ptr ptr)
 @ cdecl _localtime64(ptr)
 @ cdecl -version=0x600+ _localtime64_s(ptr ptr)
 @ cdecl _lock(long)
@@ -983,7 +983,7 @@
 @ cdecl _spawnvp(long str ptr)
 @ cdecl _spawnvpe(long str ptr ptr)
 @ cdecl _splitpath(str ptr ptr ptr ptr)
-@ stub -version=0x600+ _splitpath_s
+@ cdecl -version=0x600+ _splitpath_s(str ptr long ptr long ptr long ptr long)
 @ stub -version=0x600+ _sprintf_l
 @ stub -version=0x600+ _sprintf_p_l
 @ stub -version=0x600+ _sprintf_s_l
@@ -1116,8 +1116,8 @@
 @ stub -version=0x600+ _vsnprintf_s_l
 @ cdecl _vsnwprintf(ptr long wstr ptr)
 @ stub -version=0x600+ _vsnwprintf_l
-@ stub -version=0x600+ _vsnwprintf_s
-@ stub -version=0x600+ _vsnwprintf_s_l
+@ cdecl -stub -version=0x600+ _vsnwprintf_s(ptr long long wstr ptr)
+@ cdecl -stub -version=0x600+ _vsnwprintf_s_l(ptr long long wstr ptr ptr)
 @ stub -version=0x600+ _vsprintf_l
 @ stub -version=0x600+ _vsprintf_p
 @ stub -version=0x600+ _vsprintf_p_l
@@ -1213,7 +1213,7 @@
 @ cdecl _wgetcwd(wstr long)
 @ cdecl _wgetdcwd(long wstr long)
 @ cdecl _wgetenv(wstr)
-@ stub -version=0x600+ _wgetenv_s
+@ cdecl -version=0x600+ _wgetenv_s(ptr ptr long wstr)
 @ extern _winmajor
 @ extern _winminor
 @ stub -version=0x600+ _winput_s
@@ -1254,7 +1254,7 @@
 @ cdecl _wspawnvp(long wstr ptr)
 @ cdecl _wspawnvpe(long wstr ptr ptr)
 @ cdecl _wsplitpath(wstr ptr ptr ptr ptr)
-@ stub -version=0x600+ _wsplitpath_s
+@ cdecl -version=0x600+ _wsplitpath_s(wstr ptr long ptr long ptr long ptr long)
 @ cdecl _wstat(wstr ptr)
 @ cdecl _wstat64(wstr ptr)
 @ cdecl _wstati64(wstr ptr)
@@ -1358,7 +1358,7 @@
 @ cdecl getc(ptr)
 @ cdecl getchar()
 @ cdecl getenv(str)
-@ stub -version=0x600+ getenv_s
+@ cdecl -version=0x600+ getenv_s(ptr ptr long str)
 @ cdecl gets(str)
 @ cdecl getwc(ptr)
 @ cdecl getwchar()
@@ -1412,7 +1412,7 @@
 @ cdecl memchr(ptr long long)
 @ cdecl memcmp(ptr ptr long)
 @ cdecl memcpy(ptr ptr long)
-@ stub -version=0x600+ memcpy_s
+@ cdecl -version=0x600+ memcpy_s(ptr long ptr long)
 @ cdecl memmove(ptr ptr long)
 @ cdecl -version=0x600+ memmove_s(ptr long ptr long)
 @ cdecl memset(ptr long long)
@@ -1485,9 +1485,9 @@
 @ cdecl strtoul(str ptr long)
 @ cdecl strxfrm(ptr str long)
 @ varargs swprintf(ptr wstr)
-@ stub -version=0x600+ swprintf_s
+@ varargs -version=0x600+ swprintf_s(ptr long wstr)
 @ varargs swscanf(wstr wstr)
-@ stub -version=0x600+ swscanf_s
+@ varargs -stub -version=0x600+ swscanf_s(wstr wstr)
 @ cdecl system(str)
 @ cdecl tan(double)
 @ cdecl -arch=x86_64,arm tanf(long)

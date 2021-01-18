@@ -77,6 +77,7 @@
 #include "CFolderItems.h"
 #include "CFolder.h"
 #include "CShellDispatch.h"
+#include "CShellLibrary.h"
 #include "CDropTargetHelper.h"
 #include "CFolderOptions.h"
 #include "folders/CFSFolder.h"

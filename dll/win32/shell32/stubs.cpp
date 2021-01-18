@@ -1326,3 +1326,103 @@ SHGetShellStyleHInstance(VOID)
     FIXME("SHGetShellStyleHInstance() stub\n");
     return NULL;
 }
+
+/*
+ * Unimplemented
+ */
+EXTERN_C HRESULT
+WINAPI
+GetAppPathFromLink(IShellItem* pItem,
+                   LPWSTR pwszPathBuffer,
+                   DWORD dwBufferLen)
+{
+    FIXME("GetAppPathFromLink() stub\n");
+    return S_OK;
+}
+
+/*
+ * Unimplemented
+ */
+EXTERN_C HRESULT
+WINAPI
+GetCurrentProcessExplicitAppUserModelID(PWSTR *AppID)
+{
+    FIXME("GetCurrentProcessExplicitAppUserModelID() stub\n");
+    return S_OK;
+}
+
+/*
+ * Unimplemented
+ */
+EXTERN_C VOID
+WINAPI
+SetExplorerServerMode(UINT unknown)
+{
+    FIXME("SetExplorerServerMode() stub\n");
+}
+
+/*
+ * Unimplemented
+ */
+EXTERN_C HRESULT
+WINAPI
+SHCreateItemFromParsingName(PCWSTR pszPath,
+                            IBindCtx *pbc,
+                            REFIID riid,
+                            void **ppv)
+{
+    FIXME("SHCreateItemFromParsingName() stub\n");
+    return S_OK;
+}
+
+/*
+ * Unimplemented
+ */
+EXTERN_C DWORD
+WINAPI
+SHGetAppCompatFlags(DWORD dwMask)
+{
+    FIXME("SHGetAppCompatFlags() stub\n");
+    return 0;
+}
+
+/*
+ * Unimplemented
+ */
+EXTERN_C HRESULT
+WINAPI
+SHGetKnownFolderIDList(REFKNOWNFOLDERID rfid,
+                       DWORD dwFlags,
+                       HANDLE hToken,
+                       PIDLIST_ABSOLUTE *ppidl)
+{
+    FIXME("SHGetKnownFolderIDList() stub\n");
+    return S_OK;
+}
+
+/*
+ * Unimplemented
+ */
+EXTERN_C HRESULT
+WINAPI
+SHGetPropertyStoreFromParsingName(PCWSTR pszPath,
+                                  IBindCtx *pbc,
+                                  GETPROPERTYSTOREFLAGS flags,
+                                  REFIID riid,
+                                  void **ppv)
+{
+    FIXME("SHGetPropertyStoreFromParsingName() stub\n");
+    return S_OK;
+}
+
+/*
+ * Unimplemented
+ */
+EXTERN_C HRESULT
+WINAPI
+SHQueryUserNotificationState(PVOID *pquns) // QUERY_USER_NOTIFICATION_STATE
+{
+    FIXME("SHGetPropertyStoreFromParsingName() stub\n");
+    //*pquns = QUNS_ACCEPTS_NOTIFICATIONS;
+    return S_OK;
+}

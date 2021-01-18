@@ -377,7 +377,10 @@
 377 stdcall GetEnhMetaFileW(wstr)
 378 stdcall GetFontAssocStatus(ptr)
 379 stdcall GetFontData(long long long ptr long)
+@   stdcall -version=0x600+ GetFontFileData(long long int64 ptr long)
+@   stdcall -version=0x600+ GetFontFileInfo(long long ptr long long)
 380 stdcall GetFontLanguageInfo(long)
+@   stdcall -version=0x600+ GetFontRealizationInfo(ptr ptr)
 381 stdcall GetFontResourceInfoW(str ptr ptr long)
 382 stdcall GetFontUnicodeRanges(ptr ptr) NtGdiGetFontUnicodeRanges
 383 stdcall GetGlyphIndicesA(long ptr long ptr long)
@@ -608,6 +611,11 @@
 608 stdcall bMakePathNameW(wstr wstr wstr long)
 609 stdcall cGetTTFFromFOT(long long long long long long long)
 610 stdcall gdiPlaySpoolStream(long long long long long long)
+1005 stdcall -version=0x601+ UnknownOrdinal1()
+1032 stdcall -version=0x601+ BeginGdiRendering()
+1057 stdcall -version=0x601+ CreateBitmapFromDxSurface()
+1058 stdcall -version=0x601+ CreateBitmapFromDxSurface2()
+1413 stdcall -version=0x601+ EndGdiRendering()
 ; FIXME: Wine DX Dlls need these
 @ stdcall D3DKMTCreateDCFromMemory(ptr)
 @ stdcall D3DKMTDestroyDCFromMemory(ptr)

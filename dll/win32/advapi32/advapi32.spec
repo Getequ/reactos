@@ -202,6 +202,7 @@
 @ stdcall ElfReportEventAndSourceW(long long ptr long long long ptr ptr long long ptr ptr long ptr ptr)
 @ stdcall ElfReportEventW(long long long long ptr long long ptr ptr long ptr ptr)
 @ stdcall EnableTrace(long long long ptr double) ntdll.EtwEnableTrace
+@ stdcall -version=0x600+ EnableTraceEx(ptr ptr int64 long long int64 int64 long ptr)
 @ stdcall EncryptFileA(str)
 @ stdcall EncryptFileW(wstr)
 @ stub EncryptedFileKeyInfo
@@ -218,6 +219,7 @@
 @ stdcall EqualPrefixSid(ptr ptr)
 @ stdcall EqualSid(ptr ptr)
 @ stdcall -version=0x600+ EventEnabled(ptr ptr)
+@ stdcall -version=0x600+ EventProviderEnabled(ptr str int64)
 @ stdcall -version=0x600+ EventWrite(ptr ptr long ptr)
 @ stdcall -version=0x600+ EventWriteTransfer(ptr ptr ptr ptr long ptr)
 @ stdcall -version=0x600+ EventRegister(ptr ptr ptr ptr)
@@ -417,6 +419,7 @@
 @ stdcall MapGenericMask(ptr ptr) ntdll.RtlMapGenericMask
 @ stdcall NotifyBootConfigStatus(long)
 @ stdcall NotifyChangeEventLog(long long)
+@ stub -version=0x600+ NotifyServiceStatusChangeW
 @ stdcall ObjectCloseAuditAlarmA(str ptr long)
 @ stdcall ObjectCloseAuditAlarmW(wstr ptr long)
 @ stdcall ObjectDeleteAuditAlarmA(str ptr long)
@@ -474,7 +477,11 @@
 @ stdcall RegDeleteKeyA(long str)
 @ stdcall RegDeleteKeyExA(long str long long)
 @ stdcall RegDeleteKeyExW(long wstr long long)
+@ stdcall -version=0x600+ RegDeleteKeyValueA(ptr str str)
+@ stdcall -version=0x600+ RegDeleteKeyValueW(ptr wstr wstr)
 @ stdcall RegDeleteKeyW(long wstr)
+@ stdcall -version=0x600+ RegDeleteTreeA(ptr str)
+@ stdcall -version=0x600+ RegDeleteTreeW(ptr wstr)
 @ stdcall RegDeleteValueA(long str)
 @ stdcall RegDeleteValueW(long wstr)
 @ stdcall RegDisablePredefinedCache()
@@ -518,6 +525,8 @@
 @ stdcall RegSaveKeyExW(long str ptr long)
 @ stdcall RegSaveKeyW(long ptr ptr)
 @ stdcall RegSetKeySecurity(long long ptr)
+@ stdcall -version=0x600+ RegSetKeyValueA(ptr str str long ptr long)
+@ stdcall -version=0x600+ RegSetKeyValueW(ptr wstr wstr long ptr long)
 @ stdcall RegSetValueA(long str long ptr long)
 @ stdcall RegSetValueExA(long str long long ptr long)
 @ stdcall RegSetValueExW(long wstr long long ptr long)

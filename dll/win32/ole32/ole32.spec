@@ -34,6 +34,7 @@
 @ stdcall CoFreeUnusedLibraries()
 @ stdcall CoFreeUnusedLibrariesEx(long long)
 # CoGetApartmentID
+@ stdcall -version=0x601+ CoGetApartmentType(ptr ptr)
 @ stdcall CoGetCallContext(ptr ptr)
 @ stdcall CoGetCallerTID(ptr)
 @ stdcall -stub CoGetCancelObject(long ptr ptr)
@@ -208,6 +209,8 @@
 @ stdcall MkParseDisplayName(ptr ptr ptr ptr)
 @ stdcall MonikerCommonPrefixWith(ptr ptr ptr)
 @ stub MonikerRelativePathTo
+@ stdcall ObjectStublessClient28()
+@ stdcall ObjectStublessClient29()
 @ stdcall OleBuildVersion()
 @ stdcall OleConvertIStorageToOLESTREAM(ptr ptr)
 @ stub OleConvertIStorageToOLESTREAMEx

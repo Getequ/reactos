@@ -268,6 +268,7 @@
 269 stdcall RegenerateUserEnvironment(ptr long)
 270 stdcall SHAddToRecentDocs(long ptr)
 271 stdcall SHAppBarMessage(long ptr)
+@   stdcall -stub -version=0x600+ SHBindToObject(ptr ptr ptr ptr ptr)
 272 stdcall SHBindToParent(ptr ptr ptr ptr)
 273 stdcall SHBrowseForFolder(ptr) SHBrowseForFolderA
 274 stdcall SHBrowseForFolderA(ptr)
@@ -276,6 +277,7 @@
 277 stdcall SHChangeNotifySuspendResume(long ptr long long)
 278 stdcall SHCreateDirectoryExA(long str ptr)
 279 stdcall SHCreateDirectoryExW(long wstr ptr)
+@   stdcall -version=0x600+ SHCreateItemFromParsingName(wstr ptr ptr ptr)
 280 stub SHCreateLocalServerRunDll
 281 stdcall SHCreateProcessAsUserW(ptr)
 282 stdcall SHCreateQueryCancelAutoPlayMoniker(ptr)
@@ -417,7 +419,8 @@
 654 stdcall ReadCabinetState(long long)
 660 stdcall -noname FileIconInit(long)
 680 stdcall IsUserAnAdmin()
-681 stdcall -noname SHGetAppCompatFlags(long) shlwapi.SHGetAppCompatFlags
+681 stdcall -noname SHGetAppCompatFlags(long) # shlwapi.SHGetAppCompatFlags
+682 stdcall -stub -version=0x601+ StgMakeUniqueName(ptr wstr long ptr ptr)
 683 stub -noname SHStgOpenStorageW
 684 stub -noname SHStgOpenStorageA
 685 stdcall SHPropStgCreate(ptr ptr ptr long long long ptr ptr)
@@ -467,3 +470,73 @@
 755 stdcall -noname PathIsEqualOrSubFolder(wstr wstr)
 756 stub -noname DeleteFileThumbnail
 757 stdcall -version=0x600+ SHGetStockIconInfo(long long ptr)
+760 stub -noname -version=0x600+ SHConfirmOperation
+781 stub -noname -version=0x600+ SHApplyPropertiesToItem
+787 stub -version=0x600+ SHMapIDListToSystemImageListIndexAsync
+790 stub -version=0x600+ SHMapIDListToSystemImageListIndex
+@   stdcall -version=0x601+ GetCurrentProcessExplicitAppUserModelID(wstr)
+814 stub -noname -version=0x600+ SHCreateLeafConditionEx
+817 stub -noname -version=0x600+ SHCreateLeafCondition
+818 stdcall -stub -noname -version=0x600+ SHCreateFilter(wstr wstr ptr long ptr ptr ptr)
+819 stdcall -stub -noname -version=0x600+ SHLoadFilterFromStream(ptr ptr ptr)
+823 stub -noname -version=0x600+ SHGetFolderTypeDescription
+824 stub -noname -version=0x600+ SHGetFolderTypeFromCanonicalName
+829 stub -noname -version=0x600+ MeasureMenuItem
+833 stub -noname -version=0x600+ SHKnownFolderFromCSIDL
+840 stub -noname -version=0x600+ PathGetPathDisplayName
+849 stub -noname -version=0x600+ SHCreateConditionFactory
+850 stub -noname -version=0x600+ PathComparePaths
+851 stub -noname -version=0x601+ SHGetTopViewDescription
+862 stub -noname -version=0x600+ SHCompareIDsFull
+866 stub -noname -version=0x600+ SHExtCoCreateInstance
+870 stub -noname -version=0x600+ DUI_Shell32_StartDeferUninitialization
+871 stub -noname -version=0x600+ DUI_Shell32_EndDeferUninitialization
+873 stub -noname -version=0x600+ SHIconIndexFromPIDL
+881 stub -noname -version=0x601+ SHEnumClassesOfCategories
+882 stub -noname -version=0x601+ SHWriteClassesOfCategories
+884 stub -noname -version=0x601+ SHDoDragDropWithPreferredEffect
+885 stub -noname -version=0x601+ RunInstallUninstallStubs
+886 stub -noname -version=0x601+ SHLaunchSearch
+888 stub -noname -version=0x601+ SHLimitInputEndSubclass
+892 stub -noname -version=0x601+ GetSqmableFileName
+893 stub -noname -version=0x601+ SetWindowRelaunchProperties
+894 stub -noname -version=0x601+ MakeDestinationItem
+895 stdcall -noname -version=0x601+ GetAppPathFromLink(ptr wstr long)
+896 stub -noname -version=0x601+ ClearDestinationsForAllApps
+897 stub -noname -version=0x601+ SaveTopViewSettings
+899 stdcall -noname -version=0x601+ SetExplorerServerMode(long)
+900 stub -noname -version=0x601+ GetAppIDRoot
+902 stub -noname -version=0x601+ IsSearchEnabled
+@   stdcall -stub -version=0x600+ AssocCreateForClasses(ptr long ptr ptr)
+@   stdcall -version=0x601+ SetCurrentProcessExplicitAppUserModelID(wstr)
+@   stdcall -stub -version=0x600+ SHAssocEnumHandlers(wstr ptr ptr)
+@   stub -version=0x601+ SHAssocEnumHandlersForProtocolByApplication
+@   stdcall -stub -version=0x600+ SHBindToFolderIDListParent(ptr ptr ptr ptr ptr)
+@   stdcall -stub -version=0x600+ SHBindToFolderIDListParentEx(ptr ptr ptr ptr ptr ptr)
+@   stdcall -stub -version=0x600+ SHChangeNotifyRegisterThread(ptr)
+@   stdcall -stub -version=0x600+ SHCreateAssociationRegistration(ptr ptr)
+@   stdcall -version=0x600+ SHCreateDataObject(ptr long ptr ptr ptr ptr)
+@   stdcall -stub -version=0x600+ SHCreateItemFromIDList(ptr ptr ptr)
+@   stdcall -stub -version=0x600+ SHCreateItemFromRelativeName(ptr wstr ptr ptr ptr)
+@   stdcall -stub -version=0x600+ SHCreateItemInKnownFolder(ptr long wstr ptr ptr)
+@   stdcall -stub -version=0x600+ SHCreateItemWithParent(ptr ptr ptr ptr ptr)
+@   stdcall -stub -version=0x600+ SHCreateShellItemArray(ptr ptr long ptr ptr)
+@   stdcall -stub -version=0x600+ SHCreateShellItemArrayFromDataObject(ptr ptr ptr)
+@   stdcall -stub -version=0x600+ SHCreateShellItemArrayFromIDLists(long ptr ptr)
+@   stdcall -stub -version=0x600+ SHCreateShellItemArrayFromShellItem(ptr ptr ptr)
+@   stub -version=0x600+ SHEvaluateSystemCommandTemplate
+@   stdcall -stub -version=0x600+ SHGetFolderPathEx(ptr long ptr wstr long)
+@   stdcall -stub -version=0x600+ SHGetItemFromDataObject(ptr long ptr ptr)
+@   stdcall -stub -version=0x600+ SHGetItemFromObject(ptr ptr ptr)
+@   stdcall -stub -version=0x600+ SHGetIDListFromObject(ptr ptr)
+@   stdcall -version=0x600+ SHGetKnownFolderIDList(ptr long ptr ptr)
+@   stdcall -stub -version=0x601+ SHGetKnownFolderItem(ptr ptr ptr ptr ptr)
+@   stdcall -stub -version=0x600+ SHGetLocalizedName(wstr wstr long long)
+@   stdcall -version=0x600+ SHGetNameFromIDList(ptr ptr wstr)
+@   stdcall -version=0x600+ SHGetPropertyStoreFromParsingName(wstr ptr ptr ptr ptr)
+@   stdcall -stub -version=0x600+ SHGetTemporaryPropertyForItem(ptr ptr ptr)
+@   stdcall -version=0x600+ SHOpenWithDialog(ptr ptr)
+@   stdcall -version=0x600+ SHQueryUserNotificationState(ptr)
+@   stdcall -stub -version=0x600+ SHSetTemporaryPropertyForItem(ptr ptr ptr)
+@   stdcall -stub -version=0x600+ Shell_GetCachedImageIndexW(wstr long long)
+@   stdcall -stub -version=0x601+ Shell_NotifyIconGetRect(ptr ptr)

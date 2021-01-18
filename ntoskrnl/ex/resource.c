@@ -1931,7 +1931,7 @@ ExReleaseResourceForThreadLite(IN PERESOURCE Resource,
 
             /* Do a table lookup */
             Owner = Resource->OwnerTable;
-            ASSERT(Owner != NULL);
+            //ASSERT(Owner != NULL);
 
             /* Check if we're out of the size and don't match */
             if ((i >= Owner->TableSize) || (Owner[i].OwnerThread != Thread))

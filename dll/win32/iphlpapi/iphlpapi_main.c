@@ -3509,6 +3509,36 @@ NhGetInterfaceNameFromGuid(_In_ const GUID * pInterfaceGUID,
 }
 
 /******************************************************************
+ *    CancelMibChangeNotify2 (IPHLPAPI.@)
+ */
+DWORD WINAPI CancelMibChangeNotify2(HANDLE handle)
+{
+    FIXME("(handle %p): stub\n", handle);
+    return NO_ERROR;
+}
+
+/******************************************************************
+ *    ConvertInterfaceGuidToLuid (IPHLPAPI.@)
+ */
+DWORD WINAPI ConvertInterfaceGuidToLuid(const GUID *guid, NET_LUID *luid)
+{
+    DWORD ret;
+    MIB_IFROW row;
+
+    TRACE("(%s %p)\n", debugstr_guid(guid), luid);
+
+    if (!guid || !luid) return ERROR_INVALID_PARAMETER;
+
+    row.dwIndex = guid->Data1;
+    if ((ret = GetIfEntry( &row ))) return ret;
+
+    luid->Info.Reserved     = 0;
+    luid->Info.NetLuidIndex = guid->Data1;
+    luid->Info.IfType       = row.dwType;
+    return NO_ERROR;
+}
+
+/******************************************************************
  *    ConvertInterfaceIndexToLuid (IPHLPAPI.@)
  */
 DWORD WINAPI ConvertInterfaceIndexToLuid(NET_IFINDEX index, NET_LUID *luid)
@@ -3526,6 +3556,46 @@ DWORD WINAPI ConvertInterfaceIndexToLuid(NET_IFINDEX index, NET_LUID *luid)
     luid->Info.Reserved     = 0;
     luid->Info.NetLuidIndex = index;
     luid->Info.IfType       = row.dwType;
+    return NO_ERROR;
+}
+
+/******************************************************************
+ *    ConvertInterfaceLuidToGuid (IPHLPAPI.@)
+ */
+DWORD WINAPI ConvertInterfaceLuidToGuid(const NET_LUID *luid, GUID *guid)
+{
+    DWORD ret;
+    MIB_IFROW row;
+
+    TRACE("(%p %p)\n", luid, guid);
+
+    if (!luid || !guid) return ERROR_INVALID_PARAMETER;
+
+    row.dwIndex = luid->Info.NetLuidIndex;
+    if ((ret = GetIfEntry( &row ))) return ret;
+
+    memset( guid, 0, sizeof(*guid) );
+    guid->Data1 = luid->Info.NetLuidIndex;
+    memcpy( guid->Data4+2, "NetDev", 6 );
+    return NO_ERROR;
+}
+
+/******************************************************************
+ *    ConvertInterfaceLuidToIndex (IPHLPAPI.@)
+ */
+DWORD WINAPI ConvertInterfaceLuidToIndex(const NET_LUID *luid, NET_IFINDEX *index)
+{
+    DWORD ret;
+    MIB_IFROW row;
+
+    TRACE("(%p %p)\n", luid, index);
+
+    if (!luid || !index) return ERROR_INVALID_PARAMETER;
+
+    row.dwIndex = luid->Info.NetLuidIndex;
+    if ((ret = GetIfEntry( &row ))) return ret;
+
+    *index = luid->Info.NetLuidIndex;
     return NO_ERROR;
 }
 
@@ -3549,3 +3619,69 @@ DWORD WINAPI ConvertInterfaceLuidToNameW(const NET_LUID *luid, WCHAR *name, SIZE
     return NO_ERROR;
 }
 
+/******************************************************************
+ *    ConvertInterfaceNameToLuidA (IPHLPAPI.@)
+ */
+DWORD WINAPI ConvertInterfaceNameToLuidA(const char *name, NET_LUID *luid)
+{
+    DWORD ret;
+    IF_INDEX index;
+    MIB_IFROW row;
+
+    TRACE("(%s %p)\n", debugstr_a(name), luid);
+
+    if ((ret = getInterfaceIndexByName( name, &index ))) return ERROR_INVALID_NAME;
+    if (!luid) return ERROR_INVALID_PARAMETER;
+
+    row.dwIndex = index;
+    if ((ret = GetIfEntry( &row ))) return ret;
+
+    luid->Info.Reserved     = 0;
+    luid->Info.NetLuidIndex = index;
+    luid->Info.IfType       = row.dwType;
+    return NO_ERROR;
+}
+
+/******************************************************************
+ *    ConvertInterfaceNameToLuidW (IPHLPAPI.@)
+ */
+DWORD WINAPI ConvertInterfaceNameToLuidW(const WCHAR *name, NET_LUID *luid)
+{
+    DWORD ret;
+    IF_INDEX index;
+    MIB_IFROW row;
+    char nameA[IF_MAX_STRING_SIZE + 1];
+
+    TRACE("(%s %p)\n", debugstr_w(name), luid);
+
+    if (!luid) return ERROR_INVALID_PARAMETER;
+    memset( luid, 0, sizeof(*luid) );
+
+    if (!WideCharToMultiByte( CP_ACP, 0, name, -1, nameA, sizeof(nameA), NULL, NULL ))
+        return ERROR_INVALID_NAME;
+
+    if ((ret = getInterfaceIndexByName( nameA, &index ))) return ret;
+
+    row.dwIndex = index;
+    if ((ret = GetIfEntry( &row ))) return ret;
+
+    luid->Info.Reserved     = 0;
+    luid->Info.NetLuidIndex = index;
+    luid->Info.IfType       = row.dwType;
+    return NO_ERROR;
+}
+
+/******************************************************************
+ *    FreeMibTable (IPHLPAPI.@)
+ *
+ * Free buffer allocated by network functions
+ *
+ * PARAMS
+ *  ptr     [In] pointer to the buffer to free
+ *
+ */
+void WINAPI FreeMibTable(void *ptr)
+{
+    TRACE("(%p)\n", ptr);
+    HeapFree(GetProcessHeap(), 0, ptr);
+}
