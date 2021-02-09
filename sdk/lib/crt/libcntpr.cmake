@@ -19,6 +19,7 @@ list(APPEND LIBCNTPR_SOURCE
     printf/sprintf.c
     printf/streamout.c
     printf/swprintf.c
+    printf/swprintf_s.c
     printf/vprintf.c
     printf/vsprintf.c
     printf/vswprintf.c
@@ -48,6 +49,7 @@ list(APPEND LIBCNTPR_SOURCE
     string/itoa.c
     string/itow.c
     string/mbstowcs_nt.c
+    string/string.c
     string/strtoi64.c
     string/strtol.c
     string/strtoul.c

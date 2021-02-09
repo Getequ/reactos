@@ -18,6 +18,7 @@ add_executable(ntkrnlmp
     ${NTKRNLMP_SOURCE}
     ${NTKRNLMP_PCH_SKIP_SOURCE}
     ${REACTOS_SOURCE_DIR}/ntoskrnl/ntoskrnl.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/ntkrnlmp_stubs.c
     ${CMAKE_CURRENT_BINARY_DIR}/ntkrnlmp.def)
 set_property(TARGET ntkrnlmp PROPERTY ENABLE_EXPORTS TRUE)
 

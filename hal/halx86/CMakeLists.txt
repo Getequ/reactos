@@ -21,6 +21,7 @@ function(add_hal _halname)
         endforeach()
         add_library(${_halname} MODULE
             ${_haldata_SOURCES}
+            ${CMAKE_CURRENT_BINARY_DIR}/hal_stubs.c
             ${CMAKE_CURRENT_BINARY_DIR}/hal.def)
     else()
         foreach(_component ${_haldata_COMPONENTS})
@@ -28,6 +29,7 @@ function(add_hal _halname)
         endforeach()
         add_library(${_halname} MODULE
             ${_haldata_SOURCES}
+            ${CMAKE_CURRENT_BINARY_DIR}/hal_stubs.c
             ${CMAKE_CURRENT_BINARY_DIR}/hal.def)
         target_link_libraries(${_halname} ${_haldata_LIBS})
     endif()

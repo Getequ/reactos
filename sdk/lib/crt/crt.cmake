@@ -42,6 +42,7 @@ list(APPEND CRT_SOURCE
     math/frexp.c
     math/huge_val.c
     math/hypot.c
+    math/_hypotf.c
     math/ieee754/j0_y0.c
     math/ieee754/j1_y1.c
     math/ieee754/jn_yn.c
@@ -214,6 +215,7 @@ list(APPEND CRT_SOURCE
     startup/reactos.c
     stdio/_flsbuf.c
     stdio/_flswbuf.c
+    stdio/acrt_iob_func.c
     stdio/access.c
     stdio/file.c
     stdio/find.c

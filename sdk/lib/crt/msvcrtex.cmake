@@ -33,8 +33,7 @@ list(APPEND MSVCRTEX_SOURCE
     misc/fltused.c
     misc/isblank.c
     misc/iswblank.c
-    misc/ofmt_stub.c
-    stdio/acrt_iob_func.c)
+    misc/ofmt_stub.c)
 
 if(MSVC)
     list(APPEND MSVCRTEX_SOURCE
