@@ -1758,7 +1758,7 @@ ThemePageDlgProc(HWND hwndDlg,
                             WCHAR wszTheme[MAX_PATH];
                             WCHAR* format = L"desk.cpl desk,@Appearance /Action:ActivateMSTheme /file:\"%s\"";
 
-                            SHGetFolderPathAndSubDirW(0, CSIDL_RESOURCES, NULL, SHGFP_TYPE_DEFAULT, L"themes\\Royale\\Royale.msstyles", wszTheme);
+                            SHGetFolderPathAndSubDirW(0, CSIDL_RESOURCES, NULL, SHGFP_TYPE_DEFAULT, L"themes\\SevenVG_pink\\SevenVG_pink.msstyles", wszTheme);
                             swprintf(wszParams, format, wszTheme);
                             RunControlPanelApplet(hwndDlg, wszParams);
                         }
@@ -2883,7 +2883,7 @@ InstallWizard(VOID)
         WCHAR wszTheme[MAX_PATH];
         WCHAR* format = L"desk.cpl desk,@Appearance /Action:ActivateMSTheme /file:\"%s\"";
 
-        SHGetFolderPathAndSubDirW(0, CSIDL_RESOURCES, NULL, SHGFP_TYPE_DEFAULT, L"themes\\Royale\\Royale.msstyles", wszTheme);
+        SHGetFolderPathAndSubDirW(0, CSIDL_RESOURCES, NULL, SHGFP_TYPE_DEFAULT, L"themes\\SevenVG_pink\\SevenVG_pink.msstyles", wszTheme);
         swprintf(wszParams, format, wszTheme);
         RunControlPanelApplet(hWnd, wszParams);
     }

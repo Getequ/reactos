@@ -328,7 +328,7 @@ CreateProgressBar(
     return CreateProgressBarEx(Left, Top, Right, Bottom,
                                TextTop, TextRight,
                                DoubleEdge,
-                               FOREGROUND_YELLOW | BACKGROUND_BLUE,
+                               FOREGROUND_YELLOW | BACKGROUND_CYAN,
                                0,
                                DescriptionText,
                                "%-3lu%%",

@@ -4281,7 +4281,7 @@ ProgressCountdown(
                                       10,
                                       24,
                                       TRUE,
-                                      FOREGROUND_RED | BACKGROUND_BLUE,
+                                      FOREGROUND_RED | BACKGROUND_CYAN,
                                       0,
                                       NULL,
                                       MUIGetString(STRING_REBOOTPROGRESSBAR),

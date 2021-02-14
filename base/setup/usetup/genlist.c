@@ -184,7 +184,7 @@ DrawListEntries(
         FillConsoleOutputAttribute(StdOutput,
                                    (List->CurrentEntry == ListEntry) ?
                                    FOREGROUND_BLUE | BACKGROUND_WHITE :
-                                   FOREGROUND_WHITE | BACKGROUND_BLUE,
+                                   FOREGROUND_WHITE | BACKGROUND_CYAN,
                                    Width,
                                    coPos,
                                    &Written);
@@ -210,7 +210,7 @@ DrawListEntries(
     while (coPos.Y < ListUi->Bottom)
     {
         FillConsoleOutputAttribute(StdOutput,
-                                   FOREGROUND_WHITE | BACKGROUND_BLUE,
+                                   FOREGROUND_WHITE | BACKGROUND_CYAN,
                                    Width,
                                    coPos,
                                    &Written);

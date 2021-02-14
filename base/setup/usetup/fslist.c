@@ -182,7 +182,7 @@ DrawFileSystemList(
         coPos.X = List->Left;
         coPos.Y = List->Top + (SHORT)Index;
         FillConsoleOutputAttribute(StdOutput,
-                                   FOREGROUND_WHITE | BACKGROUND_BLUE,
+                                   FOREGROUND_WHITE | BACKGROUND_CYAN,
                                    sizeof(Buffer),
                                    coPos,
                                    &Written);

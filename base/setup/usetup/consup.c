@@ -252,7 +252,7 @@ CONSOLE_ClearScreen(VOID)
      * function is currently not available in our console "emulation" layer).
      */
     FillConsoleOutputAttribute(StdOutput,
-                               FOREGROUND_BLUE | BACKGROUND_BLUE,
+                               FOREGROUND_BLUE | BACKGROUND_CYAN,
                                xScreen * yScreen,
                                coPos,
                                &Written);
@@ -266,7 +266,7 @@ CONSOLE_ClearScreen(VOID)
 
     /* Reset the actual foreground & background colors */
     FillConsoleOutputAttribute(StdOutput,
-                               FOREGROUND_WHITE | BACKGROUND_BLUE,
+                               FOREGROUND_WHITE | BACKGROUND_CYAN,
                                xScreen * yScreen,
                                coPos,
                                &Written);
@@ -309,7 +309,7 @@ CONSOLE_NormalTextXY(
         coPos.X = x;
 
         FillConsoleOutputAttribute(StdOutput,
-                                   FOREGROUND_WHITE | BACKGROUND_BLUE,
+                                   FOREGROUND_WHITE | BACKGROUND_CYAN,
                                    col,
                                    coPos,
                                    &Written);
@@ -584,7 +584,7 @@ CONSOLE_SetHighlightedTextXY(
     Length = (ULONG)strlen(Text);
 
     FillConsoleOutputAttribute(StdOutput,
-                               FOREGROUND_WHITE | FOREGROUND_INTENSITY | BACKGROUND_BLUE,
+                               FOREGROUND_WHITE | FOREGROUND_INTENSITY | BACKGROUND_CYAN,
                                Length,
                                coPos,
                                &Written);

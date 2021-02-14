@@ -422,7 +422,7 @@ PrintEmptyLine(
     if (ListUi->Line >= 0 && ListUi->Line <= Height)
     {
         FillConsoleOutputAttribute(StdOutput,
-                                   FOREGROUND_WHITE | BACKGROUND_BLUE,
+                                   FOREGROUND_WHITE | BACKGROUND_CYAN,
                                    Width,
                                    coPos,
                                    &Written);
@@ -462,7 +462,7 @@ PrintPartitionData(
     Attribute = (ListUi->CurrentDisk == DiskEntry &&
                  ListUi->CurrentPartition == PartEntry) ?
                  FOREGROUND_BLUE | BACKGROUND_WHITE :
-                 FOREGROUND_WHITE | BACKGROUND_BLUE;
+                 FOREGROUND_WHITE | BACKGROUND_CYAN;
 
     if (ListUi->Line >= 0 && ListUi->Line <= Height)
     {
@@ -521,7 +521,7 @@ PrintDiskData(
     if (ListUi->Line >= 0 && ListUi->Line <= Height)
     {
         FillConsoleOutputAttribute(StdOutput,
-                                   FOREGROUND_WHITE | BACKGROUND_BLUE,
+                                   FOREGROUND_WHITE | BACKGROUND_CYAN,
                                    Width,
                                    coPos,
                                    &Written);
